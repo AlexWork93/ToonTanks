@@ -50,6 +50,9 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ATank::Move);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ATank::Turn);
+	PlayerInputComponent->BindAction(TEXT("Fire"),EInputEvent::IE_Pressed, this, &ATank::FireProjectile);
+
+	
 }
 
 void ATank::Move(float Value) {	

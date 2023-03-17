@@ -21,6 +21,7 @@ protected:
 	void TurnTurret(FVector ToTargetVector);
 	void TurnTurret(FRotator ToTargetRotator);
 	void SetTurretRotationSpeed (float speed);
+	virtual void FireProjectile();
 
 public:	
 	// Called every frame
@@ -41,4 +42,7 @@ private:
 		class UArrowComponent* ProjectileSpawnPoint;
 
 	float TurretRoTationSpeed;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AProjectile> ProjectileClass;
 };

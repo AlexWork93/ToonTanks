@@ -3,6 +3,8 @@
 
 #include "Turret.h"
 #include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
+
 
 ATurret::ATurret()
 {
@@ -16,6 +18,7 @@ ATurret::ATurret()
 	isAggred = false;
 	isIdle = true;
 	rotateRight = true;
+	FireRate = 2;
 }
 
 // Called when the game starts or when spawned
@@ -27,7 +30,7 @@ void ATurret::BeginPlay()
 	IdleRotateRight = FRotator(InitTurretRotation.Pitch, InitTurretRotation.Yaw - IdleRotationRange, InitTurretRotation.Roll);
 	IdleRotateLeft = FRotator(InitTurretRotation.Pitch, InitTurretRotation.Yaw + IdleRotationRange, InitTurretRotation.Roll);
 	SetTurretRotationSpeed(3);
-
+	GetWorldTimerManager().SetTimer(FireTimerHandle, this, &ATurret::FireProjectile, FireRate, true);
 }
 
 // Called every frame
@@ -35,6 +38,34 @@ void ATurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	SwitchStateOfTower();
+	RotateTower();
+}
+
+// Called to bind functionality to input
+void ATurret::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}
+
+bool ATurret::verifyIfTurretRotationIsEqualTo(FRotator Rotation) {
+
+	if (GetTurret()->GetComponentRotation().Equals(Rotation, 1.f)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void ATurret::FireProjectile() {
+	if (isAggred) {
+		Super::FireProjectile();
+	}
+}
+
+void ATurret::SwitchStateOfTower() {
 	if (PlayerPawn) {
 		if (FVector::Dist(PlayerPawn->GetActorLocation(), GetActorLocation()) <= AttackDistance) {
 			isIdle = false;
@@ -45,8 +76,9 @@ void ATurret::Tick(float DeltaTime)
 			isAggred = false;
 		}
 	}
+}
 
-
+void ATurret::RotateTower() {
 	if (isAggred) {
 
 		TurnTurret(PlayerPawn->GetActorLocation());
@@ -72,22 +104,5 @@ void ATurret::Tick(float DeltaTime)
 				rotateRight = true;
 			}
 		}
-	}
-}
-
-// Called to bind functionality to input
-void ATurret::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
-bool ATurret::verifyIfTurretRotationIsEqualTo(FRotator Rotation) {
-
-	if (GetTurret()->GetComponentRotation().Equals(Rotation, 1.f)) {
-		return true;
-	}
-	else {
-		return false;
 	}
 }

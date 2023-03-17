@@ -21,6 +21,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void FireProjectile() override;
+
 
 public:
 	// Called every frame
@@ -31,6 +33,8 @@ public:
 private:
 
 	bool verifyIfTurretRotationIsEqualTo(FRotator Rotation);
+	void SwitchStateOfTower();
+	void RotateTower();
 
 	APawn* PlayerPawn;
 	FRotator InitTurretRotation;
@@ -42,4 +46,7 @@ private:
 	bool rotateRight;
 	bool isAggred;
 	bool isIdle;
+
+	FTimerHandle FireTimerHandle;
+	float FireRate;
 };

@@ -5,6 +5,8 @@
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Projectile.h"
+
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -55,4 +57,10 @@ void ABasePawn::TurnTurret(FRotator ToTargetRotator) {
 
 void ABasePawn::SetTurretRotationSpeed(float speed) {
 	TurretRoTationSpeed = speed;
+}
+
+void ABasePawn::FireProjectile() {
+	DrawDebugSphere(GetWorld(), ProjectileSpawnPoint->GetComponentLocation(), 20, 12, FColor::Green, false, 0.3);
+	auto SpawnedProjectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnPoint->GetComponentLocation(), ProjectileSpawnPoint->GetComponentRotation());
+	SpawnedProjectile->SetOwner(this);
 }
