@@ -60,7 +60,7 @@ void ABasePawn::SetTurretRotationSpeed(float speed) {
 }
 
 void ABasePawn::FireProjectile() {
-	DrawDebugSphere(GetWorld(), ProjectileSpawnPoint->GetComponentLocation(), 20, 12, FColor::Green, false, 0.3);
+	//DrawDebugSphere(GetWorld(), ProjectileSpawnPoint->GetComponentLocation(), 20, 12, FColor::Green, false, 0.3);
 	auto SpawnedProjectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnPoint->GetComponentLocation(), ProjectileSpawnPoint->GetComponentRotation());
 	SpawnedProjectile->SetOwner(this);
 }
